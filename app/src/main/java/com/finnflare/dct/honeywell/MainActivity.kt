@@ -26,6 +26,7 @@ class MainActivity : BaseScannerActivity() {
         binding.webview.settings.domStorageEnabled = true
         binding.webview.settings.allowFileAccess = true
         binding.webview.webViewClient = BaseWebViewClient(this)
+        binding.webview.webChromeClient = BaseWebChromeClient(this)
     }
 
     override fun onScanResult(data: String, code: String) {

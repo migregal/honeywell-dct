@@ -6,4 +6,10 @@
     <string name="toast_msg_scanner_properties_error">Failed to apply properties</string>
     <string name="toast_msg_scanner_unavailable">Scanner unavailable</string>
     <string name="toast_msg_file_saved">Saved</string>
+
+
+    <string name="ok">Да</string>
+    <string name="cancel">Отмена</string>
+
+
 </resources>
