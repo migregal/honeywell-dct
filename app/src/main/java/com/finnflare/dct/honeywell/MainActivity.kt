@@ -34,9 +34,24 @@ class MainActivity : BaseScannerActivity() {
 
         //TODO add scan res type check
 
+        val result = when (code) {
+            "d" -> {
+                (data + controlNumberGTIN(data))
+            }
+            "w" -> {
+                val startIndex: Int = data.indexOf("01") + 2
+                "01" + data.substring(startIndex, startIndex + 14) +
+                        "21" + data.substring(startIndex + 16, startIndex + 29)
+            }
+            else -> return
+        }
+
         runOnUiThread {
             binding.webview.evaluateJavascript(
-                "onScanEvent(\"$data\");"
+                "(function() { " +
+                        "const event = new CustomEvent('scan', { detail: \"$result\" });" +
+                        "window.dispatchEvent(event); " +
+                        "})();"
             ) { }
         }
     }
@@ -47,5 +62,19 @@ class MainActivity : BaseScannerActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun controlNumberGTIN(str: String): String {
+        var ch = 0
+        var nch = 0
+
+        str.forEachIndexed { index, c ->
+            when {
+                index % 2 == 0 -> ch += Character.digit(c, 10)
+                else -> nch += Character.digit(c, 10)
+            }
+        }
+
+        return ((10 - (ch + 3 * nch) % 10) % 10).toString()
     }
 }
