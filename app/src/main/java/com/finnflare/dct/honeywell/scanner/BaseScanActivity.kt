@@ -77,22 +77,7 @@ open class BaseScannerActivity : AppCompatActivity(),
             }
 
             it.addTriggerListener(this)
-            it.setProperties(
-                mutableMapOf<String, Any>(
-                    BarcodeReader.PROPERTY_CODE_128_ENABLED to true,
-                    BarcodeReader.PROPERTY_EAN_13_ENABLED to true,
-                    BarcodeReader.PROPERTY_GS1_128_ENABLED to false,
-                    BarcodeReader.PROPERTY_QR_CODE_ENABLED to false,
-                    BarcodeReader.PROPERTY_CODE_39_ENABLED to false,
-                    BarcodeReader.PROPERTY_UPC_A_ENABLE to false,
-                    BarcodeReader.PROPERTY_AZTEC_ENABLED to false,
-                    BarcodeReader.PROPERTY_CODABAR_ENABLED to false,
-                    BarcodeReader.PROPERTY_INTERLEAVED_25_ENABLED to false,
-                    BarcodeReader.PROPERTY_PDF_417_ENABLED to false,
-                    BarcodeReader.PROPERTY_CENTER_DECODE to true,
-                    BarcodeReader.PROPERTY_NOTIFICATION_BAD_READ_ENABLED to false
-                )
-            )
+            it.setProperties(conf)
 
             try {
                 it.claim()
@@ -110,7 +95,12 @@ open class BaseScannerActivity : AppCompatActivity(),
     open fun onScanResult(data: String, code: String) {}
 
     override fun onBarcodeEvent(event: BarcodeReadEvent) {
-        onScanResult(event.barcodeData, event.codeId)
+        when (event.codeId) {
+            EAN13 -> onScanResult(event.barcodeData, EAN13)
+            CODE128 -> onScanResult(event.barcodeData, CODE128)
+            DATAMATRIX -> onScanResult(event.barcodeData, DATAMATRIX)
+            else -> return
+        }
     }
 
     override fun onFailureEvent(event: BarcodeFailureEvent) {
@@ -119,5 +109,59 @@ open class BaseScannerActivity : AppCompatActivity(),
 
     override fun onTriggerEvent(event: TriggerStateChangeEvent) {
 
+    }
+
+    protected companion object {
+        const val EAN13 = "d"
+        const val CODE128 = "j"
+        const val DATAMATRIX = "w"
+
+        val conf = mapOf<String, Any>(
+            BarcodeReader.PROPERTY_CODE_128_ENABLED to true,
+            BarcodeReader.PROPERTY_DATAMATRIX_ENABLED to true,
+            BarcodeReader.PROPERTY_EAN_13_ENABLED to true,
+            BarcodeReader.PROPERTY_EAN_13_CHECK_DIGIT_TRANSMIT_ENABLED to true,
+
+            BarcodeReader.PROPERTY_GS1_128_ENABLED to false,
+            BarcodeReader.PROPERTY_ISBT_128_ENABLED to false,
+            BarcodeReader.PROPERTY_GRIDMATRIX_ENABLED to false,
+            BarcodeReader.PROPERTY_UPC_A_COUPON_CODE_MODE_ENABLED to false,
+            BarcodeReader.PROPERTY_UPC_E_ENABLED to false,
+            BarcodeReader.PROPERTY_UPC_E_E1_ENABLED to false,
+            BarcodeReader.PROPERTY_EAN_8_ENABLED to false,
+            BarcodeReader.PROPERTY_AZTEC_ENABLED to false,
+            BarcodeReader.PROPERTY_CHINA_POST_ENABLED to false,
+            BarcodeReader.PROPERTY_CODABAR_ENABLED to false,
+            BarcodeReader.PROPERTY_QR_CODE_ENABLED to false,
+            BarcodeReader.PROPERTY_CODABLOCK_A_ENABLED to false,
+            BarcodeReader.PROPERTY_CODABLOCK_F_ENABLED to false,
+            BarcodeReader.PROPERTY_CODE_11_ENABLED to false,
+            BarcodeReader.PROPERTY_CODE_93_ENABLED to false,
+            BarcodeReader.PROPERTY_COMPOSITE_ENABLED to false,
+            BarcodeReader.PROPERTY_COMPOSITE_WITH_UPC_ENABLED to false,
+            BarcodeReader.PROPERTY_DIGIMARC_ENABLED to false,
+            BarcodeReader.PROPERTY_CODE_DOTCODE_ENABLED to false,
+            BarcodeReader.PROPERTY_HAX_XIN_ENABLED to false,
+            BarcodeReader.PROPERTY_IATA_25_ENABLED to false,
+            BarcodeReader.PROPERTY_INTERLEAVED_25_ENABLED to false,
+            BarcodeReader.PROPERTY_KOREAN_POST_ENABLED to false,
+            BarcodeReader.PROPERTY_MATRIX_25_ENABLED to false,
+            BarcodeReader.PROPERTY_MAXICODE_ENABLED to false,
+            BarcodeReader.PROPERTY_MICRO_PDF_417_ENABLED to false,
+            BarcodeReader.PROPERTY_MSI_ENABLED to false,
+            BarcodeReader.PROPERTY_PDF_417_ENABLED to false,
+            BarcodeReader.PROPERTY_QR_CODE_ENABLED to false,
+            BarcodeReader.PROPERTY_RSS_ENABLED to false,
+            BarcodeReader.PROPERTY_RSS_LIMITED_ENABLED to false,
+            BarcodeReader.PROPERTY_RSS_EXPANDED_ENABLED to false,
+            BarcodeReader.PROPERTY_STANDARD_25_ENABLED to false,
+            BarcodeReader.PROPERTY_TELEPEN_ENABLED to false,
+            BarcodeReader.PROPERTY_TELEPEN_OLD_STYLE_ENABLED to false,
+            BarcodeReader.PROPERTY_TLC_39_ENABLED to false,
+            BarcodeReader.PROPERTY_TRIOPTIC_ENABLED to false,
+
+            BarcodeReader.PROPERTY_CENTER_DECODE to false,
+            BarcodeReader.PROPERTY_NOTIFICATION_BAD_READ_ENABLED to false,
+        )
     }
 }

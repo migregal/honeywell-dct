@@ -32,13 +32,10 @@ class MainActivity : BaseScannerActivity() {
     override fun onScanResult(data: String, code: String) {
         super.onScanResult(data, code)
 
-        //TODO add scan res type check
-
         val result = when (code) {
-            "d" -> {
-                (data + controlNumberGTIN(data))
-            }
-            "w" -> {
+            EAN13 -> data
+            CODE128 -> data
+            DATAMATRIX -> {
                 val startIndex: Int = data.indexOf("01") + 2
                 "01" + data.substring(startIndex, startIndex + 14) +
                         "21" + data.substring(startIndex + 16, startIndex + 29)
@@ -62,19 +59,5 @@ class MainActivity : BaseScannerActivity() {
         } else {
             super.onBackPressed()
         }
-    }
-
-    private fun controlNumberGTIN(str: String): String {
-        var ch = 0
-        var nch = 0
-
-        str.forEachIndexed { index, c ->
-            when {
-                index % 2 == 0 -> ch += Character.digit(c, 10)
-                else -> nch += Character.digit(c, 10)
-            }
-        }
-
-        return ((10 - (ch + 3 * nch) % 10) % 10).toString()
     }
 }
