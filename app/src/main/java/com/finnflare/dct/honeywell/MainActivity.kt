@@ -17,7 +17,7 @@ import com.google.android.material.navigation.NavigationView
 class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,7 +68,13 @@ class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelec
         runOnUiThread {
             binding.webview.evaluateJavascript(
                 "(function() { " +
-                        "const event = new CustomEvent('scan', { detail: \"$result\" });" +
+                        "const event = new CustomEvent('scan', " +
+                        "{ detail: { data: \"$result\", fmt: \"" +
+                        when (code) {
+                            EAN13 -> "ean13"
+                            CODE128 -> "code128"
+                            else -> "dm"
+                        } + "\"}});" +
                         "window.dispatchEvent(event); " +
                         "})();"
             ) { }
