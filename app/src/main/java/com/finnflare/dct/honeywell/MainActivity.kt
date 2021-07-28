@@ -1,32 +1,54 @@
 package com.finnflare.dct.honeywell
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.webkit.WebView
+import androidx.core.view.GravityCompat
+import androidx.preference.PreferenceManager
 import com.finnflare.dct.honeywell.databinding.ActivityMainBinding
 import com.finnflare.dct.honeywell.scanner.BaseScannerActivity
+import com.finnflare.dct.honeywell.settings.SettingsActivity
+import com.google.android.material.navigation.NavigationView
 
 @SuppressLint("SetJavaScriptEnabled")
-class MainActivity : BaseScannerActivity() {
+class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.navView.setNavigationItemSelectedListener(this)
+
+        WebView.setWebContentsDebuggingEnabled(true)
 
         binding.webview.settings.javaScriptEnabled = true
-
         binding.webview.visibility = View.INVISIBLE
-        binding.webview.loadUrl("some url placeholder")
 
         binding.webview.settings.domStorageEnabled = true
         binding.webview.settings.allowFileAccess = true
+        binding.webview.settings.mediaPlaybackRequiresUserGesture = false
         binding.webview.webViewClient = BaseWebViewClient(this)
         binding.webview.webChromeClient = BaseWebChromeClient(this)
+
+        PreferenceManager.getDefaultSharedPreferences(this).getString("url", "")?.let {
+            binding.webview.loadUrl(it)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        PreferenceManager.getDefaultSharedPreferences(this).getString("url", "")?.let {
+            if (binding.webview.url != it)
+                binding.webview.loadUrl(it)
+        }
     }
 
     override fun onScanResult(data: String, code: String) {
@@ -53,11 +75,30 @@ class MainActivity : BaseScannerActivity() {
         }
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_settings -> {
+                binding.drawerLayout.closeDrawers()
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
+            R.id.nav_about -> {
+                binding.drawerLayout.closeDrawers()
+            }
+        }
+
+        binding.drawerLayout.closeDrawers()
+
+        return true
+    }
+
     override fun onBackPressed() {
-        if (binding.webview.canGoBack()) {
-            binding.webview.goBack()
-        } else {
-            super.onBackPressed()
+        when {
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) ->
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            binding.webview.canGoBack() ->
+                binding.webview.goBack()
+            else ->
+                super.onBackPressed()
         }
     }
 }
