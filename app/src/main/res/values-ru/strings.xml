@@ -19,4 +19,7 @@
 
     <string name="settings">Настройки</string>
     <string name="about">О приложении</string>
+
+    <string name="d_f_info_title">О приложении</string>
+    <string name="d_f_info_about_app">Приложение DCT</string>
 </resources>

@@ -20,5 +20,6 @@
     <string name="settings">Settings</string>
     <string name="about">About</string>
 
-
+    <string name="d_f_info_title">About</string>
+    <string name="d_f_info_about_app">DCT App</string>
 </resources>

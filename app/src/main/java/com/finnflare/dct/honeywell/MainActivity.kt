@@ -11,6 +11,7 @@ import androidx.preference.PreferenceManager
 import com.finnflare.dct.honeywell.databinding.ActivityMainBinding
 import com.finnflare.dct.honeywell.scanner.BaseScannerActivity
 import com.finnflare.dct.honeywell.settings.SettingsActivity
+import com.finnflare.dct.honeywell.ui.dialog.AppInfoDialog
 import com.google.android.material.navigation.NavigationView
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -89,6 +90,9 @@ class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelec
             }
             R.id.nav_about -> {
                 binding.drawerLayout.closeDrawers()
+                val fm = supportFragmentManager
+                val dialogFragment = AppInfoDialog()
+                dialogFragment.show(fm, "dialog_fragment_info")
             }
         }
 
