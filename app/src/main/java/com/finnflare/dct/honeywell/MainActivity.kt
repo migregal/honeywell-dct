@@ -47,8 +47,10 @@ class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelec
         super.onResume()
 
         PreferenceManager.getDefaultSharedPreferences(this).getString("url", "")?.let {
-            if (binding.webview.url != it)
-                binding.webview.loadUrl(it)
+            binding.webview.url?.let { url ->
+                if (url.substringBefore("/#").removeSuffix("/") != it.removeSuffix("/"))
+                    binding.webview.loadUrl(it)
+            }
         }
     }
 
