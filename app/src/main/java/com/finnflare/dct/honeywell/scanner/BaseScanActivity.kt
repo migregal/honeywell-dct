@@ -77,7 +77,7 @@ open class BaseScannerActivity : AppCompatActivity(),
             }
 
             it.addTriggerListener(this)
-            it.setProperties(conf)
+//            it.setProperties(conf)
 
             try {
                 it.claim()
