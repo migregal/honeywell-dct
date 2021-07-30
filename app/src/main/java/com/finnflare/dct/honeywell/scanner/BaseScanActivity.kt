@@ -1,6 +1,7 @@
 package com.finnflare.dct.honeywell.scanner
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.finnflare.dct.honeywell.R
@@ -95,9 +96,11 @@ open class BaseScannerActivity : AppCompatActivity(),
     open fun onScanResult(data: String, code: String) {}
 
     override fun onBarcodeEvent(event: BarcodeReadEvent) {
+        Log.e("wtf", event.codeId + " : " + event.barcodeData)
         when (event.codeId) {
             EAN13 -> onScanResult(event.barcodeData, EAN13)
             CODE128 -> onScanResult(event.barcodeData, CODE128)
+            GS1_128 -> onScanResult(event.barcodeData, GS1_128)
             DATAMATRIX -> onScanResult(event.barcodeData, DATAMATRIX)
             else -> return
         }
@@ -114,6 +117,7 @@ open class BaseScannerActivity : AppCompatActivity(),
     protected companion object {
         const val EAN13 = "d"
         const val CODE128 = "j"
+        const val GS1_128 = "I"
         const val DATAMATRIX = "w"
 
         val conf = mapOf<String, Any>(
@@ -121,8 +125,8 @@ open class BaseScannerActivity : AppCompatActivity(),
             BarcodeReader.PROPERTY_DATAMATRIX_ENABLED to true,
             BarcodeReader.PROPERTY_EAN_13_ENABLED to true,
             BarcodeReader.PROPERTY_EAN_13_CHECK_DIGIT_TRANSMIT_ENABLED to true,
+            BarcodeReader.PROPERTY_GS1_128_ENABLED to true,
 
-            BarcodeReader.PROPERTY_GS1_128_ENABLED to false,
             BarcodeReader.PROPERTY_ISBT_128_ENABLED to false,
             BarcodeReader.PROPERTY_GRIDMATRIX_ENABLED to false,
             BarcodeReader.PROPERTY_UPC_A_COUPON_CODE_MODE_ENABLED to false,

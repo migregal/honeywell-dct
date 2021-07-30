@@ -58,6 +58,7 @@ class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelec
         val result = when (code) {
             EAN13 -> data
             CODE128 -> data
+            GS1_128 -> data
             DATAMATRIX -> {
                 val startIndex: Int = data.indexOf("01") + 2
                 "01" + data.substring(startIndex, startIndex + 14) +
@@ -74,7 +75,9 @@ class MainActivity : BaseScannerActivity(), NavigationView.OnNavigationItemSelec
                         when (code) {
                             EAN13 -> "ean13"
                             CODE128 -> "code128"
-                            else -> "dm"
+                            GS1_128 -> "gs1_128"
+                            DATAMATRIX -> "dm"
+                            else -> "unknown"
                         } + "\"}});" +
                         "window.dispatchEvent(event); " +
                         "})();"
