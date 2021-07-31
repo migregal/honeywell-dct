@@ -3,10 +3,9 @@
     <string name="app_name">DCT</string>
 
     <string name="toast_msg_scanner_name_exception">Invalid Scanner Name Exception: </string>
-    <string name="toast_msg_exception">Exception: </string>
-    <string name="toast_msg_scanner_properties_error">Failed to apply properties</string>
-    <string name="toast_msg_scanner_unavailable">Scanner unavailable</string>
-    <string name="toast_msg_file_saved">Saved</string>
+    <string name="toast_msg_exception">Исключение: </string>
+    <string name="toast_msg_scanner_properties_error">Не удалось применить настройки</string>
+    <string name="toast_msg_scanner_unavailable">Сканнер недоступен</string>
 
 
     <string name="ok">Да</string>

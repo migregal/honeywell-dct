@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DCT</string>
 
@@ -5,8 +6,6 @@
     <string name="toast_msg_exception">Exception: </string>
     <string name="toast_msg_scanner_properties_error">Failed to apply properties</string>
     <string name="toast_msg_scanner_unavailable">Scanner unavailable</string>
-    <string name="toast_msg_file_saved">Saved</string>
-
 
     <string name="ok">Yes</string>
     <string name="cancel">Cancel</string>
