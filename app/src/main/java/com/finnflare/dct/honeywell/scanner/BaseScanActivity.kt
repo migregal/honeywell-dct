@@ -96,7 +96,7 @@ open class BaseScannerActivity : AppCompatActivity(),
     open fun onScanResult(data: String, code: String) {}
 
     override fun onBarcodeEvent(event: BarcodeReadEvent) {
-        Log.e("wtf", event.codeId + " : " + event.barcodeData)
+        Log.e("ff_dct_scan", event.codeId + " : " + event.barcodeData)
         when (event.codeId) {
             EAN13 -> onScanResult(event.barcodeData, EAN13)
             CODE128 -> onScanResult(event.barcodeData, CODE128)
